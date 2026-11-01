@@ -3,117 +3,177 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CALCULATOR</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: linear-gradient(to right, #a1c4fd, #c3e0ee);
-      display:flex;
-      justify-content: center;
-      align-items: center;
-      height: 150px;
-      margin: 100px;
-      padding-top: 50px;
-    }
-
-    .calculator{
-      background: rgb(215, 235, 229);
-      padding: 25px;
-      border-radius: 15;
-      box-shadow: 0 0 10px rgba(255, 1, 1, 0.815);
-      text-align: center;
-      width: 300px;
-      margin-top: 50px;
-    }
-
-    input{
-      width: 80%;
-      padding: 8px;
-      margin: 5px 0;
-      font-size: 15px;
-      border: 2px solid #ccc;
-      text-align: center;
-      }
-
-      button
-        {
-        padding: 10px 15px;
-        margin: 5px;
-        background: #4caf50;
-        color: white;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 15px;
-        
-       }
-       button:hover{
-        background-color: #45a049;
-        
-       }    
-
-       #reset{
-        background-color: #747a7c;
-       }
-
-       #reset:hover {
-        background: local#d32f2f;
-       }
-
-       #result {
-        margin-top: 15px;
-        font-weight: bold;
-        font-size: 20px;
-       }
-
-       h2{
-        background-color: rgb(165, 222, 226);
-       }
-  </style>
+  <title>OmniCalc - Modern & Scientific Calculator</title>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- Google Fonts for crisp typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body>
-     <div class="calculator">
-      <h2>BASIC CALCULATOR</h2>
+<body data-theme="dark">
+  <div class="calculator-app">
+    <!-- Header with controls: Theme Toggle, Mode Switcher, History Toggle -->
+    <header class="app-header">
+      <div class="brand">
+        <span class="logo-dot"></span>
+        <span class="logo-title">OmniCalc</span>
+      </div>
+      
+      <div class="header-actions">
+        <!-- Scientific Mode Toggle -->
+        <button id="mode-toggle-btn" class="icon-btn" title="Toggle Scientific Mode" aria-label="Toggle Scientific Mode">
+          <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 6h16M4 12h16m-7 6h7M4 18l3-3m0 0l-3-3" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="btn-text">Sci</span>
+        </button>
 
-      <input type="number" id="num1" placeholder="Enter first number"><br>
-      <input type="number" id="num2" placeholder="Enter second number"><br>
+        <!-- Angle Mode (DEG/RAD) - only visible in Scientific mode -->
+        <button id="angle-mode-btn" class="icon-btn hidden" title="Toggle Degrees/Radians" aria-label="Toggle Degrees/Radians">
+          <span id="angle-label">DEG</span>
+        </button>
 
-      <button onclick="calculate('+')">+</button>
-      <button onclick="calculate('-')">-</button>
-      <button onclick="calculate('*')">*</button>
-      <button onclick="calculate('/')">/</button><br>
-      <button id="reset"onclick="resetFields()">RESET</button>  
-      <div id="result"></div>
+        <!-- History Drawer Toggle -->
+        <button id="history-toggle-btn" class="icon-btn" title="View History" aria-label="View History">
+          <svg class="icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="9"/>
+            <polyline points="12 7 12 12 15 15"/>
+          </svg>
+        </button>
 
-     </div>
+        <!-- Theme Toggle (Dark/Light) -->
+        <button id="theme-toggle-btn" class="icon-btn" title="Toggle Theme" aria-label="Toggle Theme">
+          <!-- Sun Icon -->
+          <svg class="icon sun-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>
+            <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>
+            <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+          <!-- Moon Icon -->
+          <svg class="icon moon-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
 
-     <script>
-      function calculate(operator){
-        let n1 = parseFloat(document.getElementById("num1").value);
-        let n2 = parseFloat(document.getElementById("num2").value);
-        let result ="";
+    <!-- Main Calculator Shell -->
+    <main class="calculator-card">
+      <!-- Screen / Display Section -->
+      <section class="display-container" aria-live="polite">
+        <div class="display-top-bar">
+          <span class="memory-badge" id="memory-badge" style="display: none;">M</span>
+          <button id="copy-result-btn" class="copy-btn" title="Copy result to clipboard" aria-label="Copy result">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+            </svg>
+            <span class="copy-tooltip">Copy</span>
+          </button>
+        </div>
 
-        if (isNaN(n1)|| isNaN(n2)){
-          result ="please enter valid numbers!";
-        }
+        <!-- Upper expression / calculation history preview -->
+        <div class="expression-line" id="expression-display" title="Current Expression"></div>
 
-        else{
-          switch(operator){
-            case '+':result= n1+n2; break;
-            case '-':result= n1-n2; break;
-            case '*':result= n1*n2; break;
-            case '/': result=( n2!==0)? (n1/n2):"cannot divide by zero!";
-            break;
-            default:result= "invalid operation";
-          }
-        }
-        document.getElementById("result").innerHTML= "Result:"+result;
-      }
+        <!-- Lower primary input / live result display -->
+        <div class="primary-line" id="primary-display" title="Active Value">0</div>
+      </section>
 
-      function resetFields(){
-        document.getElementById("num1").value = "";
-        document.getElementById("num2").value = "";
-        document.getElementById("result").innerHTML = "";
-      }
-     </script>
+      <!-- Keypad Grid -->
+      <section class="keypad-container">
+        <!-- Scientific Keys Section (expandable/toggleable) -->
+        <div class="scientific-keys hidden" id="scientific-keys">
+          <button class="key func-key" data-action="sin">sin</button>
+          <button class="key func-key" data-action="cos">cos</button>
+          <button class="key func-key" data-action="tan">tan</button>
+          <button class="key func-key" data-action="pi">π</button>
+          
+          <button class="key func-key" data-action="ln">ln</button>
+          <button class="key func-key" data-action="log">log</button>
+          <button class="key func-key" data-action="e">e</button>
+          <button class="key func-key" data-action="fact">x!</button>
+
+          <button class="key func-key" data-action="square">x²</button>
+          <button class="key func-key" data-action="power">xʸ</button>
+          <button class="key func-key" data-action="sqrt">√x</button>
+          <button class="key func-key" data-action="reciprocal">1/x</button>
+        </div>
+
+        <!-- Standard Keys Section -->
+        <div class="standard-keys">
+          <!-- Row 1 -->
+          <button class="key clear-key" data-action="clear-all" id="btn-ac" title="All Clear (Esc)">AC</button>
+          <button class="key action-key" data-action="backspace" id="btn-backspace" title="Delete (Backspace)">⌫</button>
+          <button class="key action-key" data-action="percent" title="Percentage (%)">%</button>
+          <button class="key operator-key" data-action="divide" data-op="÷" title="Divide (/)">÷</button>
+
+          <!-- Row 2 -->
+          <button class="key action-key" data-action="parenthesis-open" title="Open bracket (">(</button>
+          <button class="key action-key" data-action="parenthesis-close" title="Close bracket )">)</button>
+          <button class="key action-key" data-action="negate" title="Negate (+/-)">±</button>
+          <button class="key operator-key" data-action="multiply" data-op="×" title="Multiply (*)">×</button>
+
+          <!-- Row 3 -->
+          <button class="key num-key" data-num="7">7</button>
+          <button class="key num-key" data-num="8">8</button>
+          <button class="key num-key" data-num="9">9</button>
+          <button class="key operator-key" data-action="subtract" data-op="−" title="Subtract (-)">−</button>
+
+          <!-- Row 4 -->
+          <button class="key num-key" data-num="4">4</button>
+          <button class="key num-key" data-num="5">5</button>
+          <button class="key num-key" data-num="6">6</button>
+          <button class="key operator-key" data-action="add" data-op="+" title="Add (+)">+</button>
+
+          <!-- Row 5 -->
+          <button class="key num-key" data-num="1">1</button>
+          <button class="key num-key" data-num="2">2</button>
+          <button class="key num-key" data-num="3">3</button>
+          <button class="key equals-key" data-action="equals" id="btn-equals" title="Calculate (Enter)">=</button>
+
+          <!-- Row 6 -->
+          <button class="key num-key zero-key" data-num="0">0</button>
+          <button class="key num-key" data-action="decimal">.</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Slide-over History Drawer -->
+    <aside class="history-drawer" id="history-drawer" aria-hidden="true">
+      <div class="history-header">
+        <h3>Calculation History</h3>
+        <div class="history-controls">
+          <button id="clear-history-btn" class="text-btn" title="Clear all history">Clear</button>
+          <button id="close-history-btn" class="icon-btn" title="Close history" aria-label="Close history">✕</button>
+        </div>
+      </div>
+      <div class="history-list" id="history-list">
+        <!-- Injected via JavaScript -->
+        <div class="empty-history">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="9"/>
+            <polyline points="12 7 12 12 15 15"/>
+          </svg>
+          <p>No calculations yet</p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Overlay backdrop for history drawer on mobile -->
+    <div class="drawer-backdrop" id="drawer-backdrop"></div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/calculator.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
