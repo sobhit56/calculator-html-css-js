@@ -87,25 +87,34 @@
 
       <!-- Keypad Grid -->
       <section class="keypad-container">
-        <!-- Scientific Keys Section (expandable/toggleable) -->
+        <!-- Scientific Keys Section (expandable/toggleable, 2 columns x 6 rows) -->
         <div class="scientific-keys hidden" id="scientific-keys">
-          <button class="key func-key" data-action="sin">sin</button>
-          <button class="key func-key" data-action="cos">cos</button>
-          <button class="key func-key" data-action="tan">tan</button>
-          <button class="key func-key" data-action="pi">π</button>
-          
-          <button class="key func-key" data-action="ln">ln</button>
-          <button class="key func-key" data-action="log">log</button>
-          <button class="key func-key" data-action="e">e</button>
-          <button class="key func-key" data-action="fact">x!</button>
+          <!-- Row 1: Trig -->
+          <button class="key func-key" data-action="sin" title="Sine">sin</button>
+          <button class="key func-key" data-action="cos" title="Cosine">cos</button>
 
-          <button class="key func-key" data-action="square">x²</button>
-          <button class="key func-key" data-action="power">xʸ</button>
-          <button class="key func-key" data-action="sqrt">√x</button>
-          <button class="key func-key" data-action="reciprocal">1/x</button>
+          <!-- Row 2: Trig / Const -->
+          <button class="key func-key" data-action="tan" title="Tangent">tan</button>
+          <button class="key func-key" data-action="pi" title="Pi (π)">π</button>
+
+          <!-- Row 3: Logarithms -->
+          <button class="key func-key" data-action="ln" title="Natural Logarithm">ln</button>
+          <button class="key func-key" data-action="log" title="Logarithm (base 10)">log</button>
+
+          <!-- Row 4: Constants / Factorial -->
+          <button class="key func-key" data-action="e" title="Euler's Constant (e)">e</button>
+          <button class="key func-key" data-action="fact" title="Factorial (x!)">x!</button>
+
+          <!-- Row 5: Powers -->
+          <button class="key func-key" data-action="square" title="Square (x²)">x²</button>
+          <button class="key func-key" data-action="power" title="Power (xʸ)">xʸ</button>
+
+          <!-- Row 6: Roots / Reciprocal -->
+          <button class="key func-key" data-action="sqrt" title="Square Root (√x)">√x</button>
+          <button class="key func-key" data-action="reciprocal" title="Reciprocal (1/x)">1/x</button>
         </div>
 
-        <!-- Standard Keys Section -->
+        <!-- Standard Keys Section (4 columns x 6 rows) -->
         <div class="standard-keys">
           <!-- Row 1 -->
           <button class="key clear-key" data-action="clear-all" id="btn-ac" title="All Clear (Esc)">AC</button>
@@ -165,7 +174,7 @@
       </div>
     </aside>
 
-    <!-- Overlay backdrop for history drawer on mobile -->
+    <!-- Overlay backdrop for history drawer -->
     <div class="drawer-backdrop" id="drawer-backdrop"></div>
 
     <!-- Notification Toast -->
